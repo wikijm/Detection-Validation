@@ -141,7 +141,7 @@ func main() {
 		{
 			Name: "createfile",
 
-			Usage: "Create file at a spcific path",
+			Usage: "Create file at a specific path",
 			Flags: []cli.Flag{
 				&cli.StringFlag{
 					Name:     "path",
