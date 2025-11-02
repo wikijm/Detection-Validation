@@ -38,6 +38,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
+    permissions:
+      contents: write
     
     steps:
     - name: Checkout code
@@ -47,6 +49,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: mcli-windows
+        path: .
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
@@ -54,5 +57,3 @@ jobs:
         files: mcli.exe
         draft: false
         prerelease: false
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
