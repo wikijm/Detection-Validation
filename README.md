@@ -57,4 +57,16 @@ mcli.exe dnsquery --binpath c:\temp\rundll32.exe --host malicious.com
 mcli.exe createfile --path f.dat --binpath c:\temp\w.exe
 ```
 
- 
+## Installation
+
+
+### Windows (Powershell)
+
+**Run app to download prerequisites and check execution**
+```powershell
+go run .
+```
+**Compile app**
+```powershell
+go build -o mcli.exe .
+```
