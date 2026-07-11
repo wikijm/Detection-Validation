@@ -47,11 +47,13 @@ func main() {
 					Usage:    "port number",
 					Required: true,
 				},
+				&cli.StringFlag{
+					Name:  "binpath",
+					Usage: "Full path of the binary making the connection. Example: C:/temp/binary.exe",
+				},
 			},
-			Action: func(c *cli.Context) {
-
-				connectToHost(c.String("host"), c.String("port"))
-
+			Action: func(c *cli.Context) error {
+				return connectToHost(c.String("host"), c.String("port"), c.String("binpath"))
 			},
 		},
 		{
@@ -64,11 +66,13 @@ func main() {
 					Usage:    "File URL",
 					Required: true,
 				},
+				&cli.StringFlag{
+					Name:  "binpath",
+					Usage: "Full path of the binary downloading the file. Example: C:/temp/binary.exe",
+				},
 			},
-			Action: func(c *cli.Context) {
-
-				downloadFile(c.String("url"))
-
+			Action: func(c *cli.Context) error {
+				return downloadFile(c.String("url"), c.String("binpath"))
 			},
 		},
 		{
@@ -81,11 +85,13 @@ func main() {
 					Usage:    "hostname to resolve",
 					Required: true,
 				},
+				&cli.StringFlag{
+					Name:  "binpath",
+					Usage: "Full path of the binary making the DNS query. Example: C:/temp/binary.exe",
+				},
 			},
-			Action: func(c *cli.Context) {
-
-				resolve(c.String("host"))
-
+			Action: func(c *cli.Context) error {
+				return resolve(c.String("host"), c.String("binpath"))
 			},
 		},
 		{
@@ -100,7 +106,7 @@ func main() {
 				},
 				&cli.StringFlag{
 					Name:  "parent",
-					Usage: "Optinal parent command to execute",
+					Usage: "Optional parent command to execute",
 				},
 				&cli.StringFlag{
 					Name:  "arg",
@@ -129,13 +135,21 @@ func main() {
 				},
 				&cli.StringFlag{
 					Name:  "pattern",
-					Usage: "File name pattern",
+					Usage: "File name pattern (default: *)",
+					Value: "*",
+				},
+				&cli.StringFlag{
+					Name:  "password",
+					Usage: "Encryption password (default: auto-generated)",
+				},
+				&cli.Int64Flag{
+					Name:  "maxsize",
+					Usage: "Maximum file size in MB to encrypt (default: 2)",
+					Value: 2,
 				},
 			},
-			Action: func(c *cli.Context) {
-
-				EncryptFiles(c.String("path"), c.String("pattern"))
-
+			Action: func(c *cli.Context) error {
+				return EncryptFiles(c.String("path"), c.String("pattern"), c.String("password"), c.Int64("maxsize"))
 			},
 		},
 		{
@@ -153,16 +167,14 @@ func main() {
 					Usage: "Full path of the binary creating the file. Example: C:/temp/binary.exe",
 				},
 			},
-			Action: func(c *cli.Context) {
-
-				filewrite(c.String("path"), c.String("binpath"))
-
+			Action: func(c *cli.Context) error {
+				return filewrite(c.String("path"), c.String("binpath"))
 			},
 		},
 		{
 			Name: "reg",
 
-			Usage: "Add registry key",
+			Usage: "Add or delete registry key",
 			Flags: []cli.Flag{
 				&cli.StringFlag{
 					Name:     "keyname",
@@ -180,17 +192,48 @@ func main() {
 				},
 				&cli.StringFlag{
 					Name:  "binpath",
-					Usage: "Full path of the binary creating the file. Example: C:/temp/binary.exe",
+					Usage: "Full path of the binary modifying the registry. Example: C:/temp/binary.exe",
 				},
 				&cli.BoolFlag{
 					Name:  "delete",
 					Usage: "Delete key",
 				},
 			},
-			Action: func(c *cli.Context) {
+			Action: func(c *cli.Context) error {
+				return AddRegistryKey(c.String("keypath"), c.String("keyname"), c.String("value"), c.String("binpath"), c.Bool("delete"))
+			},
+		},
+		{
+			Name: "simulate",
 
-				AddRegistryKey(c.String("keypath"), c.String("keyname"), c.String("value"), c.String("binpath"), c.Bool("delete"))
-
+			Usage: "Simulate tool usage by executing specific command strings",
+			Flags: []cli.Flag{
+				&cli.StringFlag{
+					Name:  "tool",
+					Usage: "The tool to simulate (e.g., mimikatz)",
+				},
+				&cli.StringFlag{
+					Name:  "file",
+					Usage: "Optional file containing command strings (one per line)",
+				},
+				&cli.StringFlag{
+					Name:  "parent",
+					Usage: "Optional parent process name",
+					Value: "cutecat.exe",
+				},
+				&cli.IntFlag{
+					Name:  "delay",
+					Usage: "Delay in seconds between command executions",
+					Value: 1,
+				},
+				&cli.StringFlag{
+					Name:  "copy",
+					Usage: "Copy to path before execution",
+					Value: "C:/Users/Public",
+				},
+			},
+			Action: func(c *cli.Context) error {
+				return SimulateTool(c.String("tool"), c.String("file"), c.String("parent"), c.String("copy"), c.Int("delay"))
 			},
 		},
 	}
