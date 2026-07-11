@@ -14,8 +14,8 @@ func init() {
 	app.Name = "Malware Cli"
 
 	app.Description = `Detection validation tool. 
-	 The objective is to generate event with specific conditions to validate detection rule.
-	 You can execute commands such as w3wp.exe spawning shell or winword creating file or making DNS queries.`
+	 The objective is to generate events with specific conditions to validate detection rules.
+	 You can execute commands such as w3wp.exe spawning a shell, or winword.exe creating a file or making DNS queries.`
 
 }
 

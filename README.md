@@ -1,14 +1,26 @@
 # Detection-Validation
 
+[![Build and Release](https://github.com/wikijm/detection-validation/actions/workflows/build.yml/badge.svg)](https://github.com/wikijm/detection-validation/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/wikijm/detection-validation)](https://github.com/wikijm/detection-validation/releases)
+![Go Version](https://img.shields.io/badge/go-1.20-blue.svg)
+
+## Table of Contents
+- [Purpose](#purpose)
+- [Features](#features)
+- [Examples](#examples)
+- [Command Reference](#command-reference)
+- [Recent Enhancements](#recent-enhancements)
+- [Installation](#installation)
+
 ## Purpose
 
-The tool automates the process of simulating malicious process events without need to go through setup of real processes. 
+This tool automates the process of simulating malicious process events without the need to go through the setup of real processes. 
 
-Suppose you want to test w3wp.exe spawning Powershell, you will need to go through iis setup to simulate w3wp.exe events, which is a consuming task if you have many rules to validate. Since detection engines work based simple string matching from telemetry collection tools such as Sysmon or EDR, any binary with the same parent process name, child process name, commandline and path can be used to test the logic, hence no need to setup iis to simulate the behavior. 
+For example, if you want to test `w3wp.exe` spawning PowerShell, you would normally need to go through the IIS setup to simulate `w3wp.exe` events, which is a time-consuming task if you have many rules to validate. Since detection engines often work based on simple string matching from telemetry collection tools such as Sysmon or an EDR, any binary with the same parent process name, child process name, command line, and path can be used to test the logic. Hence, there is no need to set up IIS to simulate the behavior. 
 
 ![w3wp_powershell.png](img/w3wp_powershell.png)
 
-The tool allows you to create a child process with a custom parent, child, commandline and path. In addition to couple of other events such as file create from specific process and path, DNS query, registry, and process connections. 
+The tool allows you to create a child process with a custom parent, child, command line, and path, in addition to a couple of other events such as file creation from a specific process and path, DNS queries, registry modifications, and process connections. 
 
 ## Features
 
@@ -31,8 +43,8 @@ USAGE:
 
 DESCRIPTION:
    Detection validation tool.
-   The objective is to generate event with specific conditions to validate detection rule.
-   You can execute commands such as w3wp.exe spawning shell or winword creating file or making DNS queries.
+   The objective is to generate events with specific conditions to validate detection rules.
+   You can execute commands such as w3wp.exe spawning a shell, or winword.exe creating a file or making DNS queries.
 
 COMMANDS:
    argsfree    Accept any commandline
