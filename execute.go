@@ -126,6 +126,7 @@ func ExecuteCommand(commandName string, commandline string, parent string, copyP
 	if parent != "" {
 
 		parentBinaryPath := copyBinaryTo(copyPath, parent)
+		defer os.Remove(parentBinaryPath)
 
 		fullcommand := prepareCommandArgs(commandName, args)
 

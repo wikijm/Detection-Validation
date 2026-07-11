@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"crypto/rand"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"os"
@@ -84,7 +86,13 @@ func SimulateTool(toolName string, filePath string, parent string, copyPath stri
 
 	for i, cmd := range commands {
 		fmt.Printf("[%d/%d] Simulating execution of string: %s\n", i+1, len(commands), cmd)
-		_, err := ExecuteCommand(cmd, "", parent, copyPath)
+
+		b := make([]byte, 4)
+		rand.Read(b)
+		randomHex := hex.EncodeToString(b)
+		randomParent := fmt.Sprintf("mcli_%s.exe", randomHex)
+
+		_, err := ExecuteCommand(cmd, "", randomParent, copyPath)
 		if err != nil {
 			log.Printf("Error executing command '%s': %v\n", cmd, err)
 		}
